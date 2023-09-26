@@ -1,0 +1,173 @@
+const Users = require("../model/users");
+const mongoose = require("mongoose");
+
+exports.userHome = (req, res) => {
+  res.send("Welcome to user home");
+};
+
+exports.getAllUsers = (req, res) => {
+  try {
+    Users.find()
+      .then((data) => {
+        res.status(200).send({
+          message: "Users have been retrieved successfully.",
+          data: data,
+        });
+      })
+      .catch((error) => {
+        return res.status(400).send({
+          message: "Error while retrieving users data.",
+          erroe: error,
+        });
+      });
+  } catch (error) {
+    console.log("Error: ", error);
+    res.status(500).send({
+      message: "Internal server error",
+      error:error,
+    });
+  }
+};
+
+exports.getUserById = (req, res) => {
+  
+  try {
+    
+    const userId = req.params.userId;
+    Users.findOne({id: Number(userId)})
+      .then((data) => { 
+        if(!data){
+            return res.status(200).send({
+                message: "No user found with the given Id.",
+              });
+        }
+        res.status(200).send({
+          message: "User have been retrieved successfully.",
+          data: data,
+        });
+      })
+      .catch((error) => {
+        return res.status(400).send({
+          message: "Error while retrieving user data.",
+          erroe: error,
+        });
+      });
+  } catch (error) {
+    console.log("Error: ", error);
+    res.status(500).send({
+      message: "Internal server error",
+      error:error,
+    });
+  }
+};
+
+exports.addUser = (req, res) => {
+    try {
+        const payload = req.body;
+        const newUser = new Users(payload);
+        newUser
+        .save()
+          .then((data) => {
+            res.status(201).send({
+              message: "User have been added successfully.",
+              data: data,
+            });
+          })
+          .catch((error) => {
+            return res.status(400).send({
+              message: "Error while adding new user.",
+              erroe: error,
+            });
+          });
+      } catch (error) {
+        console.log("Error: ", error);
+        res.status(500).send({
+          message: "Internal server error",
+          error:error,
+        });
+      }
+    };
+  
+
+
+
+exports.updateUser = (req, res) => {
+  
+  try {
+    const userId = req.params.userId;
+    const payload = req.body;
+    Users.updateOne({id: Number(userId)}, {$set: { ...payload}})
+      .then((data) => {
+        res.status(200).send({
+          message: "User have been updated successfully.",
+          data: data,
+        });
+      })
+      .catch((error) => {
+        return res.status(400).send({
+          message: "Error while updating an user data.",
+          erroe: error,
+        });
+      });
+  } catch (error) {
+    console.log("Error: ", error);
+    res.status(500).send({
+      message: "Internal server error",
+      error:error,
+    });
+  }
+};
+
+exports.deleteUsers = (req, res) => {
+  
+    try {
+      
+      Users.deleteMany()
+        .then((data) => {
+          res.status(200).send({
+            message: "Users have been deleted successfully.",
+            data: data,
+          });
+        })
+        .catch((error) => {
+          return res.status(400).send({
+            message: "Error while deleting users data.",
+            erroe: error,
+          });
+        });
+    } catch (error) {
+      console.log("Error: ", error);
+      res.status(500).send({
+        message: "Internal server error",
+        error:error,
+      });
+    }
+  };
+
+
+exports.deleteUserById = (req, res) => {
+  
+  try {
+    const userId = req.params.userId;
+    Users.deleteOne({id: Number(userId)})
+      .then((data) => {
+        res.status(200).send({
+          message: "User have been deleted successfully.",
+          data: data,
+        });
+      })
+      .catch((error) => {
+        return res.status(400).send({
+          message: "Error while deleting user data.",
+          erroe: error,
+        });
+      });
+  } catch (error) {
+    console.log("Error: ", error);
+    res.status(500).send({
+      message: "Internal server error",
+      error:error,
+    });
+  }
+};
+ 
