@@ -61,9 +61,13 @@ exports.getUserById = (req, res) => {
   }
 };
 
-exports.addUser = (req, res) => {
+exports.addUser = async (req, res) => {
     try {
-        const payload = req.body;
+        const count = await Users.count();
+        const id = count + 1;
+        const input = req.body;
+        const payload = {id: id, ...input};
+        console.log(payload)
         const newUser = new Users(payload);
         newUser
         .save()
