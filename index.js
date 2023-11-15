@@ -9,7 +9,7 @@ require("dotenv").config();
 const PORT = 8000;
 app.use(cors());
 app.use(express.json());
-app.use("/v1",userRoutes);
+app.use(userRoutes);
 
 //Connection DB
 db();
