@@ -34,7 +34,7 @@ exports.getUserById = (req, res) => {
   try {
     
     const userId = req.params.userId;
-    Users.findOne({id: Number(userId)})
+    Users.findOne({_id: new mongoose.Types.ObjectId(userId)})
       .then((data) => { 
         if(!data){
             return res.status(200).send({
@@ -63,10 +63,8 @@ exports.getUserById = (req, res) => {
 
 exports.addUser = async (req, res) => {
     try {
-        const count = await Users.count();
-        const id = count + 1;
-        const input = req.body;
-        const payload = {id: id, ...input};
+        
+        const payload = req.body;
         console.log(payload)
         const newUser = new Users(payload);
         newUser
@@ -100,7 +98,7 @@ exports.updateUser = (req, res) => {
   try {
     const userId = req.params.userId;
     const payload = req.body;
-    Users.updateOne({id: Number(userId)}, {$set: { ...payload}})
+    Users.updateOne({id: userId}, {$set: { ...payload}})
       .then((data) => {
         res.status(200).send({
           message: "User have been updated successfully.",
@@ -153,7 +151,7 @@ exports.deleteUserById = (req, res) => {
   
   try {
     const userId = req.params.userId;
-    Users.deleteOne({id: Number(userId)})
+    Users.deleteOne({id: userId})
       .then((data) => {
         res.status(200).send({
           message: "User have been deleted successfully.",
