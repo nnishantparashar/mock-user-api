@@ -21,7 +21,7 @@ exports.getAllUsers = (req, res) => {
         });
       });
   } catch (error) {
-    console.log("Error: ", error);
+    
     res.status(500).send({
       message: "Internal server error",
       error:error,
@@ -53,7 +53,7 @@ exports.getUserById = (req, res) => {
         });
       });
   } catch (error) {
-    console.log("Error: ", error);
+   
     res.status(500).send({
       message: "Internal server error",
       error:error,
@@ -65,7 +65,7 @@ exports.addUser = async (req, res) => {
     try {
         
         const payload = req.body;
-        console.log(payload)
+       
         const newUser = new Users(payload);
         newUser
         .save()
@@ -82,7 +82,7 @@ exports.addUser = async (req, res) => {
             });
           });
       } catch (error) {
-        console.log("Error: ", error);
+       
         res.status(500).send({
           message: "Internal server error",
           error:error,
@@ -98,7 +98,7 @@ exports.updateUser = (req, res) => {
   try {
     const userId = req.params.userId;
     const payload = req.body;
-    Users.updateOne({id: userId}, {$set: { ...payload}})
+    Users.findByIdAndUpdate({_id: userId}, {$set: { ...payload}})
       .then((data) => {
         res.status(200).send({
           message: "User have been updated successfully.",
@@ -151,7 +151,7 @@ exports.deleteUserById = (req, res) => {
   
   try {
     const userId = req.params.userId;
-    Users.deleteOne({id: userId})
+    Users.findByIdAndDelete({_id: userId})
       .then((data) => {
         res.status(200).send({
           message: "User have been deleted successfully.",

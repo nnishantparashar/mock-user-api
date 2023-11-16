@@ -14,13 +14,6 @@ app.use(userRoutes);
 //Connection DB
 db();
 
-// var db = mongoose.connection;
-// db.on("connected",() =>{
-//     console.log("MongoDB is connected");
-// });
-// db.on("error",() =>{
-//     console.log("MongoDB is connection failed");
-// });
 
 
 
